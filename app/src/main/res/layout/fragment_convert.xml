@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.test.app.StringFormat" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Spinner
+                android:id="@+id/sp_from"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:entries="@array/currencies"
+                app:layout_constraintBottom_toBottomOf="@id/swap"
+                app:layout_constraintEnd_toStartOf="@id/swap"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/swap" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/swap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="swap"
+                app:layout_constraintEnd_toStartOf="@id/sp_to"
+                app:layout_constraintStart_toEndOf="@id/sp_from"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
+
+            <Spinner
+                android:id="@+id/sp_to"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:entries="@array/currencies"
+                app:layout_constraintBottom_toBottomOf="@id/swap"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/swap"
+                app:layout_constraintTop_toTopOf="@id/swap" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_from"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:inputType="numberDecimal"
+                android:text="1"
+                app:layout_constraintEnd_toEndOf="@id/sp_from"
+                app:layout_constraintStart_toStartOf="@id/sp_from"
+                app:layout_constraintTop_toBottomOf="@id/swap" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_to"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:inputType="numberDecimal"
+                android:text="1"
+                app:layout_constraintEnd_toEndOf="@id/sp_to"
+                app:layout_constraintStart_toStartOf="@id/sp_to"
+                app:layout_constraintTop_toBottomOf="@id/swap" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="details"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ed_from"
+                tools:ignore="HardcodedText" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
