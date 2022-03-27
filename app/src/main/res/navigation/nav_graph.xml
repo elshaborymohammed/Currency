@@ -7,7 +7,22 @@
 
     <fragment
         android:id="@+id/convertFragment"
-        tools:layout="@layout/fragment_convert"
         android:name="com.test.module.convert.ui.view.ConvertFragment"
-        android:label="ConvertFragment" />
+        android:label="ConvertFragment"
+        tools:layout="@layout/fragment_convert">
+        <action
+            android:id="@+id/action_convertFragment_to_otherCurrenciesFragment"
+            app:destination="@id/otherCurrenciesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherCurrenciesFragment"
+        android:name="com.test.module.convert.ui.view.OtherCurrenciesFragment"
+        android:label="OtherCurrenciesFragment"
+        tools:layout="@layout/fragment_list">
+        <argument
+            android:name="base"
+            android:defaultValue="EUR"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
 </navigation>

@@ -4,10 +4,11 @@ import androidx.lifecycle.liveData
 import com.test.data.model.Resource
 import com.test.module.convert.data.repository.ConverterRepository
 import kotlinx.coroutines.Dispatchers
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class ConverterUseCase @Inject constructor(
-    private val repository: ConverterRepository
+    private val repository: ConverterRepository,
 ) {
     fun rate(base: String, symbols: String) = liveData(Dispatchers.IO) {
         emit(Resource.Loading)
@@ -22,6 +23,8 @@ class ConverterUseCase @Inject constructor(
             }
         } catch (e: Throwable) {
             emit(Resource.Failure(e))
+        } catch (e: UnknownHostException) {
+            emit(Resource.InternetConnectionFailure)
         }
     }
 }

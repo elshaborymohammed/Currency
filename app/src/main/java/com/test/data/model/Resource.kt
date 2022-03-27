@@ -16,6 +16,8 @@ sealed class Resource<out T : Any> {
 
     data class Failure(val throwable: Throwable) : Resource<Throwable>()
 
+    object InternetConnectionFailure : Resource<Throwable>()
+
     object Void : Resource<Void>()
 
     override fun toString(): String {

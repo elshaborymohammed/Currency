@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.test.R
 import com.test.data.model.Resource
 import com.test.databinding.FragmentConvertBinding
 import com.test.module.convert.domain.entity.LatestResponse
@@ -57,9 +59,6 @@ class ConvertFragment : Fragment() {
 
             edFrom.setOnKeyListener { view, keyCode, keyEvent ->
                 if (keyEvent.action == KeyEvent.ACTION_UP) {
-                    Timber.d(
-                        "onViewCreated() called with: keyCode = $keyCode, keyEvent = $keyEvent"
-                    )
                     calculateFrom(edFrom.text.toString().toDoubleOrNull() ?: 0.0)
                 }
                 false
@@ -67,9 +66,6 @@ class ConvertFragment : Fragment() {
 
             edTo.setOnKeyListener { view, keyCode, keyEvent ->
                 if (keyEvent.action == KeyEvent.ACTION_UP) {
-                    Timber.d(
-                        "onViewCreated() called with: keyCode = $keyCode, keyEvent = $keyEvent"
-                    )
                     calculateTo(edTo.text.toString().toDoubleOrNull() ?: 0.0)
                 }
                 false
@@ -81,6 +77,13 @@ class ConvertFragment : Fragment() {
 
                 spFrom.setSelection(to, true)
                 spTo.setSelection(from, true)
+            }
+
+            details.setOnClickListener {
+                findNavController().navigate(
+                    R.id.action_convertFragment_to_otherCurrenciesFragment,
+                    OtherCurrenciesFragmentArgs(spFrom.selectedItem.toString()).toBundle()
+                )
             }
         }
     }
@@ -103,7 +106,7 @@ class ConvertFragment : Fragment() {
 
     fun load() = convertViewModel.rate(
         dataBinding.spFrom.selectedItem.toString(),
-        "EUR,USD,EGP,GBP,AUD,CAD,PLN,MXN,JPY"
+        requireView().resources.getStringArray(R.array.currencies).joinToString(",")
     ).observe(viewLifecycleOwner) {
         this.base = dataBinding.spFrom.selectedItem.toString()
         when (it) {
@@ -114,16 +117,21 @@ class ConvertFragment : Fragment() {
                     calculateFrom(dataBinding.edFrom.text.toString().toDoubleOrNull() ?: 0.0)
                 }
             }
+            is Resource.Error -> {
+                dataBinding.progress.isVisible = false
+                this.rates = emptyMap()
+                Toast.makeText(requireContext(), it.error.type, Toast.LENGTH_SHORT)
+                    .show()
+            }
             is Resource.Failure -> {
                 dataBinding.progress.isVisible = false
                 this.rates = emptyMap()
                 Toast.makeText(requireContext(), it.throwable.message, Toast.LENGTH_SHORT)
                     .show()
             }
-            is Resource.Error -> {
+            is Resource.InternetConnectionFailure -> {
                 dataBinding.progress.isVisible = false
-                this.rates = emptyMap()
-                Toast.makeText(requireContext(), it.error.type, Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Lost Internet Connection ", Toast.LENGTH_SHORT)
                     .show()
             }
             is Resource.Loading -> {
